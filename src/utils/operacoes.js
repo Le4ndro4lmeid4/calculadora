@@ -6,6 +6,13 @@ export function subtrair(a, b) {
   return a - b
 }
 
-// TODO: implementar multiplicar(a, b)
+export function multiplicar(a, b) {
+  return a * b
+}
 
-// TODO: implementar dividir(a, b) — cuidado com divisão por zero!
+export function dividir(a, b) {
+  if (b === 0) {
+    throw new Error('Divisão por zero')
+  }
+  return a / b
+}

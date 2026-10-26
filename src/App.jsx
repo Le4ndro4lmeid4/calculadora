@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import Display from './components/Display.jsx'
 import Botao from './components/Botao.jsx'
-import { somar, subtrair } from './utils/operacoes.js'
+import { somar, subtrair, multiplicar, dividir } from './utils/operacoes.js'
 
 const NUMEROS = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0']
 
-// TODO: adicionar '*' e '/' quando as operações existirem
-const OPERADORES = ['+', '-']
+const OPERADORES = ['+', '-', '*', '/']
 
 function calcular(a, b, operador) {
   switch (operador) {
@@ -14,7 +13,10 @@ function calcular(a, b, operador) {
       return somar(a, b)
     case '-':
       return subtrair(a, b)
-    // TODO: tratar '*' e '/'
+    case '*':
+      return multiplicar(a, b)
+    case '/':
+      return dividir(a, b)
     default:
       return b
   }
@@ -35,12 +37,25 @@ export default function App() {
     }
   }
 
+  function mostrarErro() {
+    setDisplay('Erro')
+    setAnterior(null)
+    setOperador(null)
+    setNovoNumero(true)
+  }
+
   function escolherOperador(op) {
+    if (display === 'Erro') return
     const atual = Number(display)
     if (anterior !== null && operador && !novoNumero) {
-      const resultado = calcular(anterior, atual, operador)
-      setDisplay(String(resultado))
-      setAnterior(resultado)
+      try {
+        const resultado = calcular(anterior, atual, operador)
+        setDisplay(String(resultado))
+        setAnterior(resultado)
+      } catch {
+        mostrarErro()
+        return
+      }
     } else {
       setAnterior(atual)
     }
@@ -50,11 +65,15 @@ export default function App() {
 
   function igual() {
     if (anterior === null || !operador) return
-    const resultado = calcular(anterior, Number(display), operador)
-    setDisplay(String(resultado))
-    setAnterior(null)
-    setOperador(null)
-    setNovoNumero(true)
+    try {
+      const resultado = calcular(anterior, Number(display), operador)
+      setDisplay(String(resultado))
+      setAnterior(null)
+      setOperador(null)
+      setNovoNumero(true)
+    } catch {
+      mostrarErro()
+    }
   }
 
   function limpar() {
