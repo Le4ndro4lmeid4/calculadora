@@ -37,6 +37,15 @@ export default function App() {
     }
   }
 
+  function digitarPonto() {
+    if (novoNumero) {
+      setDisplay('0.')
+      setNovoNumero(false)
+    } else if (!display.includes('.')) {
+      setDisplay(display + '.')
+    }
+  }
+
   function mostrarErro() {
     setDisplay('Erro')
     setAnterior(null)
@@ -83,7 +92,6 @@ export default function App() {
     setNovoNumero(true)
   }
 
-  // TODO: botão de ponto decimal ('.')
   // TODO: histórico de operações
 
   return (
@@ -95,6 +103,7 @@ export default function App() {
           {NUMEROS.map((n) => (
             <Botao key={n} valor={n} onClick={digitarNumero} />
           ))}
+          <Botao valor="." onClick={digitarPonto} />
           <Botao valor="C" onClick={limpar} tipo="limpar" />
           <Botao valor="=" onClick={igual} tipo="igual" />
         </div>
