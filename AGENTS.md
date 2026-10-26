@@ -19,3 +19,5 @@ Não há testes, linter nem typecheck configurados — o README (template do Vit
 
 - `src/main.jsx` → monta `<App />` (`index.html` aponta para ele)
 - Lógica de cálculo isolada em `src/utils/operacoes.js` — funções puras; colocar novas operações ali, não no componente
+
+- Comente o código em português.

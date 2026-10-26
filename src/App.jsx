@@ -7,6 +7,10 @@ const NUMEROS = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0']
 
 const OPERADORES = ['+', '-', '*', '/']
 
+// Calcula a operação entre dois números usando as funções puras de operacoes.js.
+// É o único ponto de despacho de operadores: quando uma nova operação for
+// adicionada, incluir o case aqui e adicioná-la também em OPERADORES.
+// Operador sem correspondência cai no default, devolvendo o segundo número.
 function calcular(a, b, operador) {
   switch (operador) {
     case '+':
@@ -18,7 +22,7 @@ function calcular(a, b, operador) {
     case '/':
       return dividir(a, b)
     default:
-      return b
+      return b // operador desconhecido: devolve o segundo número sem calcular
   }
 }
 
