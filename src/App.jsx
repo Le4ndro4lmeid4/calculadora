@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Display from './components/Display.jsx'
 import Botao from './components/Botao.jsx'
+import Historico from './components/Historico.jsx'
 import { somar, subtrair, multiplicar, dividir } from './utils/operacoes.js'
 
 const NUMEROS = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0']
@@ -31,6 +32,7 @@ export default function App() {
   const [anterior, setAnterior] = useState(null)
   const [operador, setOperador] = useState(null)
   const [novoNumero, setNovoNumero] = useState(true)
+  const [historico, setHistorico] = useState([])
 
   function digitarNumero(n) {
     if (novoNumero) {
@@ -57,12 +59,20 @@ export default function App() {
     setNovoNumero(true)
   }
 
+  // Registra uma operação concluída ("a op b = resultado") no histórico.
+  // A exibição corta para as últimas 3 (Historico recebe historico.slice(-3)).
+  // Erros de cálculo não são registrados — o catch chama mostrarErro() sem passar daqui.
+  function registrarNoHistorico(a, op, b, resultado) {
+    setHistorico([...historico, `${a} ${op} ${b} = ${resultado}`])
+  }
+
   function escolherOperador(op) {
     if (display === 'Erro') return
     const atual = Number(display)
     if (anterior !== null && operador && !novoNumero) {
       try {
         const resultado = calcular(anterior, atual, operador)
+        registrarNoHistorico(anterior, operador, atual, resultado)
         setDisplay(String(resultado))
         setAnterior(resultado)
       } catch {
@@ -79,7 +89,9 @@ export default function App() {
   function igual() {
     if (anterior === null || !operador) return
     try {
-      const resultado = calcular(anterior, Number(display), operador)
+      const b = Number(display)
+      const resultado = calcular(anterior, b, operador)
+      registrarNoHistorico(anterior, operador, b, resultado)
       setDisplay(String(resultado))
       setAnterior(null)
       setOperador(null)
@@ -96,11 +108,10 @@ export default function App() {
     setNovoNumero(true)
   }
 
-  // TODO: histórico de operações
-
   return (
     <div className="calculadora">
       <h1>Calculadora</h1>
+      <Historico itens={historico.slice(-3)} />
       <Display valor={display} />
       <div className="teclado">
         <div className="numeros">
