@@ -8,6 +8,11 @@ const NUMEROS = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0']
 
 const OPERADORES = ['+', '-', '*', '/']
 
+// Rótulos de exibição: internamente os operadores são '*' e '/' porque
+// calcular() e operacoes.js dependem dessas chaves; apenas o teclado e o
+// histórico mostram os símbolos × e ÷.
+const ROTULOS_OPERADORES = { '*': '×', '/': '÷' }
+
 // Calcula a operação entre dois números usando as funções puras de operacoes.js.
 // É o único ponto de despacho de operadores: quando uma nova operação for
 // adicionada, incluir o case aqui e adicioná-la também em OPERADORES.
@@ -63,7 +68,7 @@ export default function App() {
   // A exibição corta para as últimas 3 (Historico recebe historico.slice(-3)).
   // Erros de cálculo não são registrados — o catch chama mostrarErro() sem passar daqui.
   function registrarNoHistorico(a, op, b, resultado) {
-    setHistorico([...historico, `${a} ${op} ${b} = ${resultado}`])
+    setHistorico([...historico, `${a} ${ROTULOS_OPERADORES[op] ?? op} ${b} = ${resultado}`])
   }
 
   function escolherOperador(op) {
@@ -124,7 +129,7 @@ export default function App() {
         </div>
         <div className="operadores">
           {OPERADORES.map((op) => (
-            <Botao key={op} valor={op} onClick={escolherOperador} tipo="operador" />
+            <Botao key={op} valor={ROTULOS_OPERADORES[op] ?? op} onClick={escolherOperador} tipo="operador" />
           ))}
         </div>
       </div>

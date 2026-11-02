@@ -21,3 +21,4 @@ Não há testes, linter nem typecheck configurados — o README (template do Vit
 - Lógica de cálculo isolada em `src/utils/operacoes.js` — funções puras; colocar novas operações ali, não no componente
 
 - Comente o código em português.
+- Símbolos `×`/`÷` são apenas rótulos de teclado/histórico (`ROTULOS_OPERADORES` em `App.jsx`); internamente os operadores seguem `*` e `/` (chaves de `calcular()` e `operacoes.js`).
